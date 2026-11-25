@@ -1,0 +1,19 @@
+const hre = require("hardhat");
+
+async function main() {
+  const [deployer] = await hre.ethers.getSigners();
+  console.log("Deploying with:", deployer.address);
+
+  const goal = hre.ethers.parseEther("1"); // 1 ETH
+  const days = 30;
+
+  const crowdfunding = await hre.ethers.deployContract("Crowdfunding", [goal, days]);
+  await crowdfunding.waitForDeployment();
+
+  console.log("Crowdfunding deployed to:", await crowdfunding.getAddress());
+}
+
+main().catch((err) => {
+  console.error(err);
+  process.exitCode = 1;
+});
